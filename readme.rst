@@ -21,23 +21,35 @@ In production: http://www.ims.uni-stuttgart.de/bibliographie/
 Install
 =======
 
-* system requirements (RHEL):
-yum install libxml2-devel libxslt-devel libyaml-devel
+* system requirements (RHEL)
+
+::
+
+  yum install libxml2-devel libxslt-devel libyaml-devel
 
 * install:
-virtualenv --distribute env_webbib
-. env_webbib/bin/activate
-pip install -r requirements.txt
+
+::
+
+  virtualenv --distribute env_webbib
+  . env_webbib/bin/activate
+  pip install -r requirements.txt
 
 * run (testing):
-. env_webbib/bin/activate
-cd webbib
-python main.py
+
+::
+
+  . env_webbib/bin/activate
+  cd webbib
+  python main.py
 
 * translations:
-pybabel extract -F babel.cfg -o messages.pot .
-pybabel update -i messages.pot -d translations
-pybabel compile -d translations
 
-# INIT (new languages)
-pybabel init -i messages.pot -d translations -l de
+::
+
+  pybabel extract -F babel.cfg -o messages.pot .
+  pybabel update -i messages.pot -d translations
+  pybabel compile -d translations
+
+  # INIT (new languages)
+  pybabel init -i messages.pot -d translations -l de
