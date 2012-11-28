@@ -5,7 +5,7 @@
 class Config(object):
     """ BaseConfig
     """
-    # generated using: import os; os.urandom(24)
+    # generate a new one: import os; os.urandom(24)
     SECRET_KEY = 'fhttzWoxxv0mgxxwzoJpaqvfqocbpqkkfzc]izeog6ovivvdtr'
 
 class ExampleConfig(Config):
