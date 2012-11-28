@@ -1,0 +1,7 @@
+Flask
+babel
+Flask-Babel
+lxml
+simplejson
+pybtex
+

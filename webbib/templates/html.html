@@ -1,0 +1,18 @@
+<div>
+  <ul class=entries>
+  {% set hide_year=true %}
+  {% set hide_bib=true %}
+  {% for group in entries|groupby('year')|reverse %}
+    {% if not year %}
+    <li>{{ group.grouper }}</li>
+      <ul>
+    {% endif %}
+	{% for entry in group.list %}
+	<li>{% include 'entry.html' %}</li>
+	{% endfor %}
+    {% if not year %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+  </ul>
+</div>

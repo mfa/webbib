@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}- {% trans %}Authors{% endtrans %}{% endblock %}
+{% block title_inner %}- {% trans %}Authors{% endtrans %}{% endblock %}
+{% block body %}
+<div>
+<h1>{% trans %}Search{% endtrans %}</h1>
+
+  {% if error %}<p class=error><strong>{% trans %}Error:{% endtrans %}</strong> {{ error }}{% endif %}
+  <form action="{{ url_for('search') }}" method=post>
+    <table bgcolor="#CBE7EF" width="100%" cellpadding="5" cellspacing="5" border="0">
+      <tr>
+	<td align="right"><b>{% trans %}Author:{% endtrans %}</b>
+	  </td><td><select size="1" name="q_author"><option selected="true" value="">{% trans %}any{% endtrans %}</option>
+	    <optgroup label="Staff">
+	      {% for author in current %}
+	      <option value="{{ author.lastname }},{{ author.firstname }}">{{ author.lastname }}, {{ author.firstname }}</option>
+	      {% endfor %}
+	    </optgroup>
+	    <optgroup label="Former Staff">
+	      {% for author in former %}
+	      <option value="{{ author.lastname }},{{ author.firstname }}">{{ author.lastname }}, {{ author.firstname }}</option>
+	      {% endfor %}
+	    </optgroup>
+	</select></td>
+      </tr>
+      <tr>
+	<td align="right"><b>{% trans %}Title (keyword):{% endtrans %}</b></td><td><font face="sans-serif, courier"><input maxlength="40" size="30" name="q_title" type="text"></font></td>
+      </tr>
+      <tr>
+	<td valign="top" align="right"><b>{% trans %}Year:{% endtrans %}</b></td><td valign="top"><select size="5" multiple name="q_year">
+	    <option selected value="">{% trans %}any{% endtrans %}</option>
+	    {% for year in years %}
+	    <option value="{{ year }}">{{ year }}</option>
+	    {% endfor %}
+	</select></td>
+      </tr>
+      <tr>
+	<td align="right"><b>{% trans %}Target format:{% endtrans %}</b></td><td>
+	  <input checked value="html" name="format" type="radio"><img alt="HTML" src="{{ url_for('static', filename='html.gif') }}"> HTML </input>
+	  <input value="bibtex" name="format" type="radio"><img alt="BibTeX" src="{{ url_for('static', filename='bibtex.gif') }}"> BibTeX </input></td>
+      </tr>
+      <tr>
+	<td align="right" colspan="2"><input value="Search!" type="submit"></td>
+      </tr>
+    </table>
+  </form>
+<p></p>
+<table width="600">
+  <tr>
+    <td>
+      <p>{% trans %}In this form, you can select an author, a title keyword, and an output format.
+	To select two or more years, use the control key on your keyboard.{% endtrans %}</p>
+      <p>{% trans %}To get German umlauts and &szlig;, you can copy and paste the
+	characters from the list,{% endtrans %} [&auml;&nbsp;&ouml;&nbsp;&uuml;&nbsp;&Auml;&nbsp;&Ouml;&nbsp;&Uuml;&nbsp;&szlig;].</p>
+    </td>
+  </tr>
+
+</table>
+
+</div>
+{% endblock %}
+

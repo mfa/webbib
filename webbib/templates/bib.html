@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}- {{ title }}{% endblock %}
+{% block title_inner %}- {{ title }}{% endblock %}
+{% block body %}
+<div style="max-width:80%">
+  <h1>{{ title }}</h1>
+  {% for entry in entries %}
+  <pre style="background-color: #eee;">{{ entry.bibtex }}</pre>
+  <p/>
+  {% endfor %}
+</div>
+{% endblock %}

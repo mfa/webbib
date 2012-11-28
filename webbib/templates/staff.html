@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}- {% trans %}Authors{% endtrans %}{% endblock %}
+{% block title_inner %}- {% trans %}Authors{% endtrans %}{% endblock %}
+{% block body %}
+<div style="max-width:80%">
+  <h1>{% trans %}Staff{% endtrans %}</h1>
+<table class="table">
+<tr><td valign="top">
+  <h2>{% trans %}Current{% endtrans %}</h2>
+  <ul class=entries>
+  {% for entry in current %}
+    <li>{% include "person.html" %}</li>
+  {% endfor %}
+  </ul>
+</td><td valign="top">
+  <h2>{% trans %}Former{% endtrans %}</h2>
+  <ul class=entries>
+  {% for entry in former %}
+    <li>{% include "person.html" %}</li>
+  {% endfor %}
+  </ul>
+</td></tr></table>
+</div>
+{% endblock %}

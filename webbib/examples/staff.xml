@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<authors>
+  <current>
+    <author>
+      <lastname>Mustermann</lastname>
+      <firstname>Max</firstname>
+    </author>
+  </current>
+  <!-- FORMER STAFF -->
+  <former>
+    <author>
+      <lastname>Mustermann</lastname>
+      <firstname>Erika</firstname>
+    </author>
+  </former>
+</authors>

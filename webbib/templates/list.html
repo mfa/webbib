@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}- {{ title }}{% endblock %}
+{% block title_inner %}- {{ title }}{% endblock %}
+{% block body %}
+<div style="max-width:80%">
+  <h1>{{ title }}{% if navi_authors %} <a href="{{ url_for('author_byname_typ', lastname=lastname, firstname=firstname, typ='bib')}}"><img src="{{ url_for('static', filename='bibtex.gif') }}"></a>{% endif %}</h1>
+  <ul class=entries>
+  {% set hide_year=true %}
+  {% for group in entries|groupby('year')|reverse %}
+    {% if not year %}
+    <li>{{ group.grouper }}</li>
+      <ul>
+    {% endif %}
+	{% for entry in group.list %}
+	<li>{% include 'entry.html' %}</li>
+	{% endfor %}
+    {% if not year %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}

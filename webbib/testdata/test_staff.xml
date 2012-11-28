@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+
+<authors>
+<current>
+<author>
+	<lastname>Lastname1</lastname>
+	<firstname>Firstname1</firstname>
+</author>
+<author>
+	<lastname>Lastname2</lastname>
+	<firstname>Firstname2</firstname>
+</author>
+</current>
+<former>
+<author>
+	<lastname>Lastname3</lastname>
+	<firstname>Firstname3</firstname>
+</author>
+</former>
+</authors>
