@@ -40,8 +40,11 @@ Install
 ::
 
   . env_webbib/bin/activate
-  cd webbib
-  python main.py
+  # install webbib
+  python setup.py install
+  # run example
+  cd example
+  webbib-cli
 
 * translations:
 
