@@ -1,0 +1,3 @@
+recursive-include webbib/templates *
+recursive-include webbib/static *
+recursive-include webbib/translations *
