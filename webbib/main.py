@@ -10,7 +10,8 @@
 
 from flask import Flask, render_template, url_for, request, Response
 from flask import session, abort
-from flaskext.babel import Babel, refresh, gettext
+from flaskext.babel import gettext
+from webbib import app, babel, set_source
 
 from lxml import etree
 import codecs
@@ -19,16 +20,16 @@ import re
 
 ### globals
 
-app = Flask(__name__)
-babel = Babel(app)
-
-# Config
-app.config.from_object('config.ExampleConfig')
+def create_app(source):
+    set_source(app, source)
+    return app
 
 # global bib and staff
-bib = bibmod.Bibliography(app.config.get('BIB_FILENAME'))
+bib = bibmod.Bibliography(app.config['BIB_FILENAME'],
+                          app.config['SOURCE'])
 bib.load()
-staff = bibmod.Staff(app.config.get('STAFF_FILENAME'))
+staff = bibmod.Staff(app.config['STAFF_FILENAME'],
+                     app.config['SOURCE'])
 staff.load()
 
 ### processing
@@ -37,6 +38,7 @@ staff.load()
 def get_locale():
     if 'lang' in request.args:
         session['lang'] = request.args.get('lang')
+    # we support de and en, return best match
     lang = request.accept_languages.best_match(['de', 'en'])
     if 'lang' not in session:
         if lang is not None:
@@ -189,6 +191,8 @@ def striptex(s):
 
 
 ### main
+def cli_main():
+    app.run(host='0.0.0.0', debug=True)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    cli_main()

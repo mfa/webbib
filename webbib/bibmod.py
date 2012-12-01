@@ -19,12 +19,13 @@ import hashlib
 
 class Staff():
 
-    def __init__(self, filename):
+    def __init__(self, filename, folder):
         self.filename = filename
+        self.source_folder = folder
 
     def load(self):
         print "Load Staff"
-        self.staff_filename = os.path.join(os.path.dirname(__file__), 
+        self.staff_filename = os.path.join(self.source_folder,
                                            self.filename)
         self.load_staff(filename=self.staff_filename)
 
@@ -88,14 +89,15 @@ class Staff():
 
 class Bibliography:
 
-    def __init__(self, filename):
+    def __init__(self, filename, folder):
         self.filename = filename
+        self.source_folder = folder
 
     def load(self):
         print "Load Bibliography"
         self.clean_variables()
         # load bib-file (first time)
-        self.bib_filename = os.path.join(os.path.dirname(__file__),
+        self.bib_filename = os.path.join(self.source_folder,
                                          self.filename)
         self.load_bib(filename=self.bib_filename)
 
