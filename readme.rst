@@ -34,14 +34,14 @@ Install
   virtualenv --distribute env_webbib
   . env_webbib/bin/activate
   pip install -r requirements.txt
+  # install webbib
+  python setup.py install
 
 * run (testing):
 
 ::
 
   . env_webbib/bin/activate
-  # install webbib
-  python setup.py install
   # run example
   cd example
   webbib-cli
