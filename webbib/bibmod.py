@@ -290,18 +290,77 @@ class Bibliography:
             self.years.sort(reverse=True)
         return self.years
 
+def gen_tex_transtable():
+    trans = u'''
+ü \\"{u} \\"u "u
+ö \\"{o} \\"o "o
+ä \\"{a} \\"a "a
+Ü \\"{U} \\"U "U
+Ö \\"{O} \\"O "O
+Ä \\"{A} \\"A "A
+à \\`a \\`{a} `a
+á \\'a \\'{a} 'a
+é \\'e \\'{e} 'e
+è \\`e \\`{e} `e
+ó \\'o \\'{o} 'o
+ò \\`o \\`{o} `o
+ú \\'u \\'{u} 'u
+ù \\`u \\`{u} `u
+À \\`A \\`{A} `A
+Á \\'A \\'{A} 'A
+É \\'E \\'{E} 'E
+È \\`E \\`{E} `E
+Ó \\'O \\'{O} 'O
+Ò \\`O \\`{O} `O
+ğ \\ug \\u{g}
+æ \\ae
+Ø \\O \\{O}
+ø \\o \\{o}
+ß \\ss {\\ss}
+í \\'\\i {\\'\\i} \\'{i} \\'i
+ç \\cc \\c{c}
+Ç \\cC \\c{C}
+ł \\l \\~l
+ş \\cs \\c{s}
+Ş \\cS \\c{S}
+ñ \\~n
+ň \\vn \\v{n}
+Ň \\vN \\v{N}
+ĕ \\ve \\v{e}
+š \\vs \\v{s}
+Š \\vS \\v{S}
+Č \\vC \\v{C}
+č \\vc \\v{c}
+ć \\'c \\'{c}
+ż \\.{z} \\.z
+ą \\k{a}
+" \\"{} \\"
+& \\&
+i \\'{\\i}
+'''
+# FIXME: last one
+
+    for line in trans.split('\n'):
+        line = line.strip()
+        if len(line.split())>1:
+            key = line.split()[0]
+            for elem in line.split()[1:]:
+                # \\ needs to be replaced because string is not raw
+                yield (elem.replace('\\','\\\\'), key, )
 
 def striptex(s):
     # replace all umlauts (hopefully) -- FIXME
-    tbl = ((r'\\"{u}', u'ü'),
-           (r'\\"u', u'ü'),
-           (r'\\"{a}', u'ä'),
-           (r'\\"a', u'ä'),
-           (r'\\"{o}', u'ö'),
-           (r'\\"o', u'ö'),
-           )
-    for i,j in tbl:
+
+    for i,j in gen_tex_transtable():
         s = re.sub(r'(%s)' % i, j, s)
+    # special case:
+    s = re.sub(r'(%s)' % r'\\\^o', u'ô', s)
+
     # replace all { and }
     s = re.sub(r'(\{|\})', "", s)
+    # remove some tex markup
+    for elem in [r'\\sl', r'\\sf', r'\\tt', r'\\textit',
+                 r'\\emph', r'\\em', r'\\mbox']:
+        s = re.sub(r'(%s)' % elem, "", s)
+    s = re.sub(r'(\\ )', " ", s)
     return s
