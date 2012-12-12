@@ -56,3 +56,13 @@ Install
 
   # INIT (new languages)
   pybabel init -i messages.pot -d translations -l de
+
+
+Tipps
+=====
+
+ * with mod_wsgi add *home* to your ``WSGIDaemonProcess``:
+
+::
+
+  WSGIDaemonProcess webbib display-name=wsgi-webbib home=/path-to-your-checkout/webbib/example
