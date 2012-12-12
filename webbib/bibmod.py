@@ -8,11 +8,14 @@ from lxml import etree
 from pybtex.database.input import bibtex
 from pybtex.database.output.bibtex import Writer
 from pybtex.database import BibliographyData
+from pybtex.backends.html import Backend as HTMLBackend
 import StringIO
 import codecs
 import sys
 import os
 import re
+
+import pybtexmod
 
 import simplejson
 import hashlib
@@ -100,6 +103,7 @@ class Bibliography:
         self.bib_filename = os.path.join(self.source_folder,
                                          self.filename)
         self.load_bib(filename=self.bib_filename)
+        self.render()
 
     def check_if_changed(self):
         if os.path.getmtime(self.filename) > self.lastload:
@@ -108,6 +112,7 @@ class Bibliography:
             self.clean_variables()
             # load bib-file (after change)
             self.load_bib(filename=self.bib_filename)
+            self.render()
 
     def clean_variables(self):
         # xml_root of document (lxml)
@@ -122,6 +127,7 @@ class Bibliography:
         self.filename = filename
         pubs = []
         index_keys = {}
+        index_bibkeys = {}
         for key, elem in bib_data.entries.iteritems():
             entry = elem.fields
 
@@ -138,6 +144,7 @@ class Bibliography:
             x = hashlib.sha1(simplejson.dumps(entry))
             entry['key'] = x.hexdigest()
             entry['authors'] = self.parse_authors(elem.persons)
+            entry['bibkey'] = elem.key
 
             # keywords
             entry['keywords'] = []
@@ -149,10 +156,12 @@ class Bibliography:
             # append to pubs
             pubs.append(entry)
             index_keys[x.hexdigest()] = len(pubs) - 1
+            index_bibkeys[elem.key] = len(pubs) - 1
             if 'year' not in entry:
                 entry['year'] = ''
         # set at end -> less time for threading problems
         self.index_keys = index_keys
+        self.index_bibkeys = index_bibkeys
         self.pubs = pubs
 
     def parse_authors(self, persons):
@@ -164,11 +173,32 @@ class Bibliography:
             todo.extend(persons.get('editors'))
             
         for elem in todo:
-            d = {}
-            d['lastname'] = striptex(elem.last()[0])
-            d['firstname'] = striptex(elem.first()[0])
-            authors.append(d)
+            if len(elem.last()) > 0:
+                d = {}
+                d['lastname'] = striptex(elem.last()[0])
+                if len(elem.first()) > 0:
+                    d['firstname'] = striptex(elem.first()[0])
+                else:
+                    d['firstname'] = ' '
+                authors.append(d)
         return authors
+
+    def render(self):
+        h = HTMLBackend()
+        for elem in pybtexmod.render(self.bib_filename[:-4]):  # remove .bib from filename
+            index = self.index_bibkeys.get(elem.key)
+            # value could be zero
+            if not index==None:
+                d = self.pubs[index]
+                d['rendered'] = striptex(elem.text.render(h))
+                try:
+                    d['author_rendered'] = d['rendered'].split('\n')[0]
+                    d['title_rendered'] = d['rendered'].split('\n')[1]
+                    d['reference_rendered'] = d['rendered'].split('\n')[2]
+                except IndexError:
+                    d['author_rendered'] = d['rendered']
+                    d['title_rendered'] = u''
+                    d['reference_rendered'] = u''
 
     def render_references(self, typ, entry):
         # FIXME: use pybtex for this part
