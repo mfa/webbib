@@ -1,7 +1,8 @@
-{% for autor in entry.authors %}{{ autor.lastname|striptex }}, {{ autor.firstname|striptex }}{% if not loop.last %}; {% endif %}{% endfor %}
+{#{% for autor in entry.authors %}{{ autor.lastname|striptex }}, {{ autor.firstname|striptex }}{% if not loop.last %}; {% endif %}{% endfor %}#}
+{{ entry.author_rendered|safe }}
 {% if not hide_year %}({{ entry.year }}){% endif %}
-<b>{{ entry.title|striptex }}</b>
-{{ entry.reference|string|striptex }}
+<b>{{ entry.title_rendered|safe }}</b>
+{{ entry.reference_rendered|safe }}
 {% if entry.pdf %}<a href="{{ entry.pdf }}"><img src="{{ url_for('static', filename='pdf_klein.gif') }}"></a>{% endif %}
 {% if entry.postscript %}<a href="{{ entry.postscript }}"><img src="{{ url_for('static', filename='psfile.gif') }}"></a>{% endif %}
 {% if entry.url %}<a href="{{ entry.url }}"><img src="{{ url_for('static', filename='html.gif') }}"></a>{% endif %}
